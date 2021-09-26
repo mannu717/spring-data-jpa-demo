@@ -1,9 +1,6 @@
 package com.manoj.modal;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -12,6 +9,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@ToString(
+        exclude = {"students", "teacher"}
+)
 @Entity
 @Table(
         name = "tbl_course"
@@ -38,7 +38,8 @@ public class Course {
     private CourseMaterial courseMaterial;
 
     @ManyToOne(
-            cascade = CascadeType.ALL
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY
     )
     @JoinColumn(
             name = "teacher_id",
@@ -47,7 +48,8 @@ public class Course {
     private Teacher teacher;
 
     @ManyToMany(
-            cascade = CascadeType.ALL
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY
     )
     @JoinTable(
             name = "tbl_course_student_map",
