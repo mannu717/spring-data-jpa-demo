@@ -12,7 +12,13 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "tbl_student")
+@Table(
+        name = "tbl_student",
+        uniqueConstraints = @UniqueConstraint(
+                name = "email_address_unique",
+                columnNames = "email_address"
+        )
+)
 public class Student {
 
     @Id
@@ -27,21 +33,22 @@ public class Student {
     )
     private Long studentId;
 
-    @Column(length = 50)
+    @Column(
+            length = 50,
+            updatable = false,
+            nullable = false
+    )
     private String firstName;
 
     @Column(length = 50)
     private String lastName;
 
-    @Column(name = "email_address")
+    @Column(
+            name = "email_address",
+            nullable = false
+    )
     private String emailId;
 
-    @Column(length = 50)
-    private String guardianName;
-
-    @Column(length = 50)
-    private String guardianPhone;
-
-    @Column(name = "guardian_email_address")
-    private String guardianEmail;
+    @Embedded
+    private Guardian guardian;
 }
